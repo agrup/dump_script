@@ -1,0 +1,38 @@
+[project]
+name = "mrcobranza-backup"
+version = "0.1.0"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "dotenv>=0.9.9",    
+]
+
+[tool.ruff]
+respect-gitignore = true
+extend-exclude = [".openapi-generator", "openapi_client"]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint]
+extend-select = ["I", "TID", "A", "ANN"]
+fixable = ["ALL"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+# Disallow all relative imports.
+ban-relative-imports = "all"
+
+[tool.pyright]
+typeCheckingMode = "strict"
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.406",
+    "ruff>=0.14.0",
+]
+
+[tool.uv]
+package = true
