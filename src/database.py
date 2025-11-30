@@ -16,13 +16,13 @@ def get_database_url() -> str:
     password = os.getenv('DATABASE_PASSWORD')
     host = os.getenv('DATABASE_HOST')
     port = os.getenv('DATABASE_PORT')
-    return f"postgresql://{os.getenv('DATABASE_USER')}:{os.getenv('DATABASE_PASSWORD')}@{os.getenv('DATABASE_HOST')}:{os.getenv('DATABASE_PORT')}/{os.getenv('DATABASE_NAME')}"
+    return f"postgresql://{user}:{password}@{host}:{port}/{database}"
 
 def get_backup_file_path() -> str:
     """
     return a path with the current date and time
     """
-    directory = os.getenv("OUTPUT_FOLDER").replace("/","")
+    directory = os.getenv("OUTPUT_FOLDER")
     return f"{directory}/backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.sql"
 
 def backup_database() -> bool:
