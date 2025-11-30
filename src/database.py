@@ -16,13 +16,14 @@ def get_database_url() -> str:
     password = os.getenv('DATABASE_PASSWORD')
     host = os.getenv('DATABASE_HOST')
     port = os.getenv('DATABASE_PORT')
-    return f"postgresql://{user}:{password}@{host}:{port}/{database}"
+    return f"postgresql://{os.getenv('DATABASE_USER')}:{os.getenv('DATABASE_PASSWORD')}@{os.getenv('DATABASE_HOST')}:{os.getenv('DATABASE_PORT')}/{os.getenv('DATABASE_NAME')}"
 
 def get_backup_file_path() -> str:
     """
     return a path with the current date and time
     """
-    return f"data/backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.sql"
+    directory = os.getenv("OUTPUT_FOLDER").replace("/","")
+    return f"{directory}/backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.sql"
 
 def backup_database() -> bool:
     """
@@ -35,9 +36,7 @@ def backup_database() -> bool:
     backup_file_path = get_backup_file_path()
 
     try:
-        #     pg_dump -U username -h hostname -p port dbname > dump.sql
-        # pg_dump -d "postgresql://username:password@host:port/databasename?sslmode=require" -f output_file.sql
-        database_url = f"postgresql://{os.getenv('DATABASE_USER')}:{os.getenv('DATABASE_PASSWORD')}@{os.getenv('DATABASE_HOST')}:{os.getenv('DATABASE_PORT')}/{os.getenv('DATABASE_NAME')}"
+        database_url = get_database_url()
         cmd = [
             "pg_dump",
             "-d", database_url,
